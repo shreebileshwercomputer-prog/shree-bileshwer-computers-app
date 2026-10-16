@@ -18,9 +18,3 @@ workflows:
           gradle --no-daemon assembleDebug
     artifacts:
       - app/build/outputs/apk/debug/*.apk
-    publishing:
-      email:
-        recipients: []
-        notify:
-          success: false
-          failure: false
