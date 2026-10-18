@@ -139,5 +139,15 @@ function bottomServices(){setBottomActive('bn-services');show('home');menu(false
 function bottomSearch(){setBottomActive('bn-search');$('search').focus();window.scrollTo({top:0,behavior:'smooth'})}
 function bottomUpdates(){setBottomActive('bn-notify');category('daily')}
 
+// Refresh published Supabase content whenever users return to the app, so admin updates appear without reinstalling the APK.
+let lastContentRefresh=0;
+async function refreshPublishedContent(){
+ const now=Date.now();
+ if(now-lastContentRefresh<5000)return;
+ lastContentRefresh=now;
+ await loadContent();
+}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')refreshPublishedContent()});
+window.addEventListener('focus',refreshPublishedContent);
 setupMenu();renderHome();loadContent();
 </script></body></html>
