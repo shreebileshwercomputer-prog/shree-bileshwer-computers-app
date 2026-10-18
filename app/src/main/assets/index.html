@@ -38,6 +38,36 @@ main{padding:16px 14px 30px}
 @media(min-width:560px){.services{grid-template-columns:repeat(3,minmax(0,1fr))}.daily{grid-template-columns:repeat(3,minmax(0,1fr))}.quicknav{justify-content:center}} .service{min-height:110px} .services{grid-template-columns:repeat(2,minmax(0,1fr))} .service span{font-size:12px} .head small{letter-spacing:.4px}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 
+
+/* Reference-screen refinement: compact blue header, vertical updates and fixed app navigation */
+main{padding-bottom:96px}
+.top{padding-top:12px}
+.top .logo{width:48px;height:48px;border:2px solid #e6f2ff;border-radius:50%;font-size:22px;color:#123b74}
+.small{font-size:10px;letter-spacing:.2px}
+.top h1{font-size:14px}
+.tagline{font-size:10px}
+.banners{gap:10px}
+.banner{min-width:100%;height:174px;border-radius:17px}
+.btxt{left:14px;right:14px;bottom:14px}
+.btxt h3{font-size:19px;max-width:78%}
+.head{margin-top:18px}
+.daily{grid-template-columns:1fr;gap:7px}
+.dailycard{min-height:unset;display:grid;grid-template-columns:36px minmax(0,1fr) auto;column-gap:10px;align-items:start;padding:11px 12px;border-radius:13px}
+.dailycard .dtop{display:contents}
+.dailycard .dicon{grid-column:1;grid-row:1 / span 3;width:34px;height:34px;border-radius:11px}
+.dailycard .dtop{font-size:10px}
+.dailycard h3{grid-column:2;margin:0 0 3px;font-size:12px}
+.dailycard p{grid-column:2;font-size:10px;line-height:1.4}
+.dailycard a{grid-column:3;grid-row:1 / span 2;margin-top:4px}
+.services{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.service{min-height:105px;padding:12px 7px;border-radius:15px}
+.ico{width:42px;height:42px;border-radius:13px}
+.bottom-nav{position:fixed;z-index:8;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(4,1fr);gap:3px;padding:8px 8px calc(8px + env(safe-area-inset-bottom));background:#fffffffa;border-top:1px solid #dce7f5;box-shadow:0 -6px 22px #102d5012}
+.bottom-nav button{border:0;background:transparent;color:#5e6f88;border-radius:11px;padding:5px 2px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;font-weight:700}
+.bottom-nav button span{font-size:19px;line-height:1.2}
+.bottom-nav button.active{background:#eaf3ff;color:#123b74}
+@media(min-width:560px){.daily{grid-template-columns:repeat(2,minmax(0,1fr))}.dailycard{min-height:100px}.banner{min-width:calc(50% - 5px)}}
+
 </style></head><body>
 <header class="top"><div class="row"><button class="menubtn" onclick="menu(true)" aria-label="મેનુ">☰</button><div class="logo">SB</div><div><div class="small">તમારી મદદ માટે એક જ જગ્યા</div><h1>SHREE BILESHWER COMPUTERS</h1><div class="tagline">શિક્ષણ • રોજગાર • યોજના • ડિજિટલ સેવા</div></div></div><label class="search">⌕ <input id="search" placeholder="માહિતી શોધો..." aria-label="માહિતી શોધો"></label></header>
 <div class="quicknav" id="quicknav" aria-label="ઝડપી મેનુ"></div>
@@ -46,6 +76,7 @@ main{padding:16px 14px 30px}
 <main><section id="home"><div class="head first"><h2>✨ કોર્સ અને જાહેરાતો</h2><small>FEATURED</small></div><div class="banners" id="banners"><div class="empty" style="min-width:100%">બેનર લોડ થઈ રહ્યા છે…</div></div><div class="head"><h2>⚡ દૈનિક અપડેટ્સ</h2><small>નવી માહિતી</small></div><div class="daily" id="daily"></div><div class="head"><h2>📚 મુખ્ય સેવાઓ</h2><small>વિભાગ પસંદ કરો</small></div><div class="services" id="services"></div></section>
 <section id="contentpage" class="hidden"><div class="head first"><h2 id="ctitle">માહિતી</h2><small id="ccount"></small></div><div id="feed"></div></section>
 <section id="toolpage" class="hidden"><div class="head first"><h2 id="tooltitle">ટૂલ</h2></div><div id="toolcontent"></div></section><div class="bottom">© SHREE BILESHWER COMPUTERS<br>વિશ્વસનીય માહિતી • ઉપયોગી સેવા • ડિજિટલ સહાય</div></main>
+<nav class="bottom-nav" aria-label="મુખ્ય નેવિગેશન"><button id="bn-home" class="active" onclick="bottomHome()"><span>⌂</span>હોમ</button><button id="bn-services" onclick="bottomServices()"><span>☷</span>સેવાઓ</button><button id="bn-search" onclick="bottomSearch()"><span>⌕</span>શોધો</button><button id="bn-notify" onclick="bottomUpdates()"><span>♧</span>નોટિફિકેશન</button></nav>
 <script>
 const SB_URL='https://lyalbowhounuwavmbpwt.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx5YWxib3dob3VudXdhdm1icHd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIxNjQ2NDgsImV4cCI6MjEwNzc0MDY0OH0._7nxzhSZSAIRgoMMOwd94eYrlZ20IJQaykCo_AZv8AE';
@@ -68,7 +99,12 @@ function renderHome(){
  $('daily').innerHTML=d.length?d.map(x=>'<article class="dailycard"><div class="dtop"><span class="dicon">📌</span>'+esc(x.item_date||x.created_at?.slice(0,10)||'નવી અપડેટ')+'</div><h3>'+esc(x.title||'દૈનિક અપડેટ')+'</h3><p>'+esc(x.description||x.item_day||'')+'</p>'+(x.link_url?'<a href="#" onclick="openExternal(\''+esc(x.link_url).replace(/'/g,'%27')+'\');return false">વિગતો જુઓ ↗</a>':'')+'</article>').join():'<div class="empty" style="grid-column:1/-1">હાલમાં કોઈ નવા દૈનિક અપડેટ્સ ઉપલબ્ધ નથી.</div>';
  $('services').innerHTML=cats.map(c=>'<button class="service" onclick="category(\''+c[0]+'\')"><div class="ico">'+c[2]+'</div><span>'+c[1]+'</span></button>').join()
 }
-function renderFeed(){const a=items.filter(x=>x.category===active&&(!query||[x.title,x.description,x.item_day].join(' ').toLowerCase().includes(query)));$('ccount').textContent=a.length+' માહિતી';$('feed').innerHTML=a.length?a.map(x=>'<article class="feedcard" role="button" tabindex="0" onclick="openItem(\\''+esc(x.id).replace(/'/g,'%27')+'\\')">'+(x.image_url?'<img src="'+esc(x.image_url)+'" alt="" onerror="this.style.display=\\'none\\'">':'<div class="dicon">📄</div>')+'<div class="feedbody"><h3>'+esc(x.title||ci(x.category)[1])+'</h3><p>વિગતો જોવા માટે ક્લિક કરો</p></div><div style="align-self:center;color:#176eb1;font-weight:900">›</div></article>').join():'<div class="empty">આ વિભાગમાં હાલમાં નવી માહિતી ઉપલબ્ધ નથી. કૃપા કરીને પછી ફરી તપાસો.</div>'}
+function renderFeed(){
+ const a=items.filter(x=>x.category===active&&(!query||[x.title,x.description,x.item_day].join(' ').toLowerCase().includes(query)));
+ $('ccount').textContent=a.length+' માહિતી';
+ $('feed').innerHTML=a.length?a.map(x=>'<article class="feedcard" data-item-id="'+esc(x.id)+'" role="button" tabindex="0">'+(x.image_url?'<img src="'+esc(x.image_url)+'" alt="" onerror="this.style.display=\'none\'">':'<div class="dicon">📄</div>')+'<div class="feedbody"><h3>'+esc(x.title||ci(x.category)[1])+'</h3><p>'+esc((x.description||'વિગતો જોવા માટે ક્લિક કરો').slice(0,150))+'</p></div><div style="align-self:center;color:#176eb1;font-weight:900">›</div></article>').join():'<div class="empty">આ વિભાગમાં હાલમાં નવી માહિતી ઉપલબ્ધ નથી. કૃપા કરીને પછી ફરી તપાસો.</div>';
+ $('feed').querySelectorAll('[data-item-id]').forEach(el=>{el.addEventListener('click',()=>openItem(el.dataset.itemId));el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openItem(el.dataset.itemId)}})});
+}
 function openItem(id){const x=items.find(v=>String(v.id)===String(id));if(!x)return;$('ccount').textContent='વિગતો';$('feed').innerHTML='<button class="secondary" onclick="renderFeed()">← પાછા જાઓ</button><article class="panel" style="margin-top:12px">'+(x.image_url?'<img src="'+esc(x.image_url)+'" alt="" style="display:block;width:100%;max-height:280px;object-fit:contain;border-radius:12px;margin-bottom:14px" onerror="this.style.display=\\'none\\'">':'')+'<h3>'+esc(x.title||ci(x.category)[1])+'</h3>'+(x.item_date?'<p class="muted">'+esc(x.item_date)+' '+esc(x.weekday||'')+'</p>':'')+'<p style="white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.75">'+esc(x.description||x.item_day||'વિગતો ઉપલબ્ધ નથી.')+'</p>'+(x.link_url?'<button class="primary" style="margin-top:12px" onclick="openExternal(\\''+esc(x.link_url).replace(/'/g,'%27')+'\\')">લિંક ખોલો / અરજી કરો ↗</button>':'')+'</article>'}
 $('search').addEventListener('input',()=>{query=$('search').value.toLowerCase().trim();if(page==='home')renderHome();if(page==='content')renderFeed()});
 async function loadContent(){try{const r=await fetch(SB_URL+'/rest/v1/content_items?select=*&is_published=eq.true&order=sort_order.asc,created_at.desc',{method:'GET',cache:'no-store',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,Accept:'application/json'}});if(!r.ok)throw Error('content request failed');const data=await r.json();if(!Array.isArray(data))throw Error('unexpected response');items=data;renderHome();if(page==='content')renderFeed();}catch(e){$('banners').innerHTML='<div class="empty" style="min-width:100%">માહિતી હાલમાં ઉપલબ્ધ નથી. કૃપા કરીને થોડા સમય પછી ફરી પ્રયાસ કરો.</div>';$('daily').innerHTML='<div class="empty" style="grid-column:1/-1">અપડેટ્સ હાલમાં ઉપલબ્ધ નથી. કૃપા કરીને પછી ફરી તપાસો.</div>';console.error('Content loading failed:',e)}}
@@ -83,5 +119,12 @@ function docHtml(type){const v=id=>$(id)?$(id).value.trim():'';const bio=type===
 function makeDoc(type){if(!$('name').value.trim()){$('docresult').innerHTML='<div class="result">કૃપા કરીને નામ લખો.</div>';return}const w=window.open('','_blank');if(!w){$('docresult').innerHTML='<div class="result">નવું પેજ ખોલવાની મંજૂરી આપો.</div>';return}w.document.open();w.document.write(docHtml(type)+'<script>window.onload=()=>setTimeout(()=>window.print(),350)<\/script>');w.document.close()}
 function downloadDoc(type){if(!$('name').value.trim()){$('docresult').innerHTML='<div class="result">કૃપા કરીને નામ લખો.</div>';return}const u=URL.createObjectURL(new Blob([docHtml(type)],{type:'text/html;charset=utf-8'})),a=document.createElement('a');a.href=u;a.download=type+'.html';a.click();setTimeout(()=>URL.revokeObjectURL(u),2000)}
 function resizePhoto(){const f=$('photo').files[0];if(!f){$('photoresult').innerHTML='<div class="result">પહેલા ફોટો પસંદ કરો.</div>';return}const [w,h]=$('psize').value.split(',').map(Number),img=new Image(),src=URL.createObjectURL(f);img.onload=()=>{const c=$('canvas');c.width=w;c.height=h;const ctx=c.getContext('2d'),scale=Math.max(w/img.width,h/img.height),sw=w/scale,sh=h/scale;ctx.drawImage(img,(img.width-sw)/2,(img.height-sh)/2,sw,sh,0,0,w,h);c.toBlob(blob=>{const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='shree-bileshwer-photo-'+w+'x'+h+'.jpg';a.click();$('photoresult').innerHTML='<div class="result">ફોટો તૈયાર થયો: '+w+' × '+h+' px</div>';setTimeout(()=>URL.revokeObjectURL(u),3000)},'image/jpeg',.92);URL.revokeObjectURL(src)};img.onerror=()=>{$('photoresult').innerHTML='<div class="result">ફોટો ખોલી શકાયો નહીં.</div>';URL.revokeObjectURL(src)};img.src=src}
+
+function setBottomActive(id){['bn-home','bn-services','bn-search','bn-notify'].forEach(x=>$(x)?.classList.toggle('active',x===id))}
+function bottomHome(){setBottomActive('bn-home');goHome()}
+function bottomServices(){setBottomActive('bn-services');show('home');menu(false);$('services').scrollIntoView({behavior:'smooth',block:'start'})}
+function bottomSearch(){setBottomActive('bn-search');$('search').focus();window.scrollTo({top:0,behavior:'smooth'})}
+function bottomUpdates(){setBottomActive('bn-notify');category('daily')}
+
 setupMenu();renderHome();loadContent();
 </script></body></html>
