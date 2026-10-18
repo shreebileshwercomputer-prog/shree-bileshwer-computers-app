@@ -105,7 +105,20 @@ function renderFeed(){
  $('feed').innerHTML=a.length?a.map(x=>'<article class="feedcard" data-item-id="'+esc(x.id)+'" role="button" tabindex="0">'+(x.image_url?'<img src="'+esc(x.image_url)+'" alt="" onerror="this.style.display=\'none\'">':'<div class="dicon">📄</div>')+'<div class="feedbody"><h3>'+esc(x.title||ci(x.category)[1])+'</h3><p>'+esc((x.description||'વિગતો જોવા માટે ક્લિક કરો').slice(0,150))+'</p></div><div style="align-self:center;color:#176eb1;font-weight:900">›</div></article>').join():'<div class="empty">આ વિભાગમાં હાલમાં નવી માહિતી ઉપલબ્ધ નથી. કૃપા કરીને પછી ફરી તપાસો.</div>';
  $('feed').querySelectorAll('[data-item-id]').forEach(el=>{el.addEventListener('click',()=>openItem(el.dataset.itemId));el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openItem(el.dataset.itemId)}})});
 }
-function openItem(id){const x=items.find(v=>String(v.id)===String(id));if(!x)return;$('ccount').textContent='વિગતો';$('feed').innerHTML='<button class="secondary" onclick="renderFeed()">← પાછા જાઓ</button><article class="panel" style="margin-top:12px">'+(x.image_url?'<img src="'+esc(x.image_url)+'" alt="" style="display:block;width:100%;max-height:280px;object-fit:contain;border-radius:12px;margin-bottom:14px" onerror="this.style.display=\\'none\\'">':'')+'<h3>'+esc(x.title||ci(x.category)[1])+'</h3>'+(x.item_date?'<p class="muted">'+esc(x.item_date)+' '+esc(x.weekday||'')+'</p>':'')+'<p style="white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.75">'+esc(x.description||x.item_day||'વિગતો ઉપલબ્ધ નથી.')+'</p>'+(x.link_url?'<button class="primary" style="margin-top:12px" onclick="openExternal(\\''+esc(x.link_url).replace(/'/g,'%27')+'\\')">લિંક ખોલો / અરજી કરો ↗</button>':'')+'</article>'}
+function openItem(id){
+ const x=items.find(v=>String(v.id)===String(id));if(!x)return;
+ $('ccount').textContent='વિગતો';
+ const panel=document.createElement('article');panel.className='panel';panel.style.marginTop='12px';
+ const back=document.createElement('button');back.className='secondary';back.textContent='← પાછા જાઓ';back.addEventListener('click',renderFeed);
+ $('feed').replaceChildren(back);
+ if(x.image_url){const img=document.createElement('img');img.src=x.image_url;img.alt='';img.style.cssText='display:block;width:100%;max-height:280px;object-fit:contain;border-radius:12px;margin-bottom:14px';img.onerror=()=>img.remove();panel.appendChild(img)}
+ const title=document.createElement('h3');title.textContent=x.title||ci(x.category)[1];panel.appendChild(title);
+ if(x.item_date){const date=document.createElement('p');date.className='muted';date.textContent=x.item_date+(x.item_day?' · '+x.item_day:'');panel.appendChild(date)}
+ const desc=document.createElement('p');desc.style.cssText='white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.75';desc.textContent=x.description||x.item_day||'વિગતો ઉપલબ્ધ નથી.';panel.appendChild(desc);
+ const url=x.link_url||x.link||x.target_url;
+ if(url){const link=document.createElement('button');link.className='primary';link.style.marginTop='12px';link.textContent='લિંક ખોલો / અરજી કરો ↗';link.addEventListener('click',()=>openExternal(url));panel.appendChild(link)}
+ $('feed').appendChild(panel)
+}
 $('search').addEventListener('input',()=>{query=$('search').value.toLowerCase().trim();if(page==='home')renderHome();if(page==='content')renderFeed()});
 async function loadContent(){try{const r=await fetch(SB_URL+'/rest/v1/content_items?select=*&is_published=eq.true&order=sort_order.asc,created_at.desc',{method:'GET',cache:'no-store',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,Accept:'application/json'}});if(!r.ok)throw Error('content request failed');const data=await r.json();if(!Array.isArray(data))throw Error('unexpected response');items=data;renderHome();if(page==='content')renderFeed();}catch(e){$('banners').innerHTML='<div class="empty" style="min-width:100%">માહિતી હાલમાં ઉપલબ્ધ નથી. કૃપા કરીને થોડા સમય પછી ફરી પ્રયાસ કરો.</div>';$('daily').innerHTML='<div class="empty" style="grid-column:1/-1">અપડેટ્સ હાલમાં ઉપલબ્ધ નથી. કૃપા કરીને પછી ફરી તપાસો.</div>';console.error('Content loading failed:',e)}}
 function tool(id){show('tool');menu(false);const titles={resume:'📄 રિઝ્યૂમે બનાવો',age:'🎂 Age Calculator',biodata:'🧾 બાયોડેટા બનાવો',photo:'🖼️ Photo Resize'};$('tooltitle').textContent=titles[id];let h='';
