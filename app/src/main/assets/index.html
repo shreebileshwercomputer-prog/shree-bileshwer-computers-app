@@ -68,7 +68,7 @@ main{padding-bottom:96px}
 .bottom-nav button.active{background:#eaf3ff;color:#123b74}
 @media(min-width:560px){.daily{grid-template-columns:repeat(2,minmax(0,1fr))}.dailycard{min-height:100px}.banner{min-width:calc(50% - 5px)}}
 
-</style></head><body>
+#brand-splash{position:fixed;inset:0;z-index:99999;background:#fff;display:flex;align-items:center;justify-content:center;transition:opacity .25s}#brand-splash img{width:62vw;max-width:260px;max-height:42vh;object-fit:contain}#brand-splash.hide{opacity:0;pointer-events:none}</style></head><body><div id="brand-splash"><img src="brand-logo.png" alt="SHREE BILESHWER COMPUTERS"></div>
 <header class="top"><div class="row"><button class="menubtn" onclick="menu(true)" aria-label="મેનુ">☰</button><div class="logo"><img src="brand-logo.png" alt="SHREE BILESHWER COMPUTERS logo"></div><div><div class="small">તમારી મદદ માટે એક જ જગ્યા</div><h1>SHREE BILESHWER COMPUTERS</h1><div class="tagline">શિક્ષણ • રોજગાર • યોજના • ડિજિટલ સેવા</div></div></div><label class="search">⌕ <input id="search" placeholder="માહિતી શોધો..." aria-label="માહિતી શોધો"></label></header>
 <div class="quicknav hidden" id="quicknav" aria-label="ઝડપી મેનુ"></div>
 
@@ -215,7 +215,7 @@ setupMenu();renderHome();loadContent();
 .nav i{background:#e5f5ed;color:#087f5b}
 .banners .banner{background:linear-gradient(120deg,#073b8c,#087f5b)}
 </style>
-</body></html>
+<script>window.addEventListener("load",function(){var splash=document.getElementById("brand-splash");if(splash){setTimeout(function(){splash.classList.add("hide");setTimeout(function(){splash.remove();},300);},650);}});</script></body></html>
 
 <style>
 /* Approved navigation and 16:9 banner adjustments */
