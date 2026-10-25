@@ -110,7 +110,7 @@ function openFeatured(id){
  show('content');menu(false);renderFeed();openItem(id);window.scrollTo(0,0);
 }
 function renderHome(){
- const featured=items.filter(x=>['ads','courses'].includes(x.category)&&x.image_url&&(!query||[x.title,x.description].join(' ').toLowerCase().includes(query)));
+ const featured=items.filter(x=>x.image_url&&(!query||[x.title,x.description].join(' ').toLowerCase().includes(query)));
  $('banners').innerHTML=featured.length?featured.map(x=>'<button type="button" class="banner" aria-label="ફોટો ખોલો: '+esc(x.title||'માહિતી')+'" onclick="openFeatured(\\''+String(x.id).replace(/'/g,'%27')+'\\')"><img src="'+esc(x.image_url)+'" alt="'+esc(x.title||'જાહેરાતનો ફોટો')+'" onerror="this.closest(\\'.banner\\').remove();startBannerAutoScroll()"></button>').join():'<div class="empty" style="min-width:100%">નવા ફોટા અહીં દેખાશે.</div>';
  startBannerAutoScroll();
  const d=items.filter(x=>x.category==='daily'&&(!query||[x.title,x.description].join(' ').toLowerCase().includes(query))).slice(0,6);
