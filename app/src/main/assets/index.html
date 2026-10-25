@@ -86,7 +86,12 @@ function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 function ci(id){return cats.find(c=>c[0]===id)||[id||'માહિતી',id||'માહિતી','📌'];}
 function menu(open){$('shade').classList.toggle('show',open)}
 function nav(label,icon,action){return '<button class="nav" onclick="'+action+'"><i>'+icon+'</i>'+label+'</button>'}
-function renderQuicknav(){const quick=cats.filter(c=>['education','jobs','schemes','farmer','online','courses'].includes(c[0]));$('quicknav').innerHTML=quick.map(c=>'<button type="button" onclick="category(\''+c[0]+'\')">'+c[2]+' '+c[1]+'</button>').join('')}
+function renderQuicknav(){
+ const box=$('quicknav');
+ const quick=cats.filter(c=>['education','jobs','schemes','farmer','online','courses'].includes(c[0]));
+ box.replaceChildren();
+ quick.forEach(c=>{const b=document.createElement('button');b.type='button';b.textContent=c[2]+' '+c[1];b.addEventListener('click',()=>category(c[0]));box.appendChild(b);});
+}
 function setupMenu(){renderQuicknav();const links=[['about','અમારા વિશે','ℹ️']];$('menuitems').innerHTML=links.map(x=>nav(x[1],x[2],"category('"+x[0]+"')")).join()+nav('ઉંમર ગણો','🎂',"tool('age')")+nav('બાયોડેટા બનાવો','🧾',"tool('biodata')")+nav('રિઝ્યૂમે બનાવો','📄',"tool('resume')")+nav('હાલની ચાલુ ભરતી','📣',"category('currentJobs')")+nav('ડિગ્રી પાસ ભરતી','🎯',"category('graduateJobs')")}
 function show(p){page=p;$('home').classList.toggle('hidden',p!=='home');$('contentpage').classList.toggle('hidden',p!=='content');$('toolpage').classList.toggle('hidden',p!=='tool')}
 function goHome(){active='all';query='';$('search').value='';show('home');menu(false);renderHome();window.scrollTo(0,0)}
@@ -111,16 +116,42 @@ function openFeatured(id){
 }
 function renderHome(){
  const featured=items.filter(x=>x.image_url&&(!query||[x.title,x.description].join(' ').toLowerCase().includes(query)));
- $('banners').innerHTML=featured.length?featured.map(x=>'<button type="button" class="banner" aria-label="ફોટો ખોલો: '+esc(x.title||'માહિતી')+'" onclick="openFeatured(\\''+String(x.id).replace(/'/g,'%27')+'\\')"><img src="'+esc(x.image_url)+'" alt="'+esc(x.title||'જાહેરાતનો ફોટો')+'" onerror="this.closest(\\'.banner\\').remove();startBannerAutoScroll()"></button>').join():'<div class="empty" style="min-width:100%">નવા ફોટા અહીં દેખાશે.</div>';
+ const rail=$('banners');rail.replaceChildren();
+ if(featured.length){featured.forEach(x=>{
+  const b=document.createElement('button');b.type='button';b.className='banner';b.setAttribute('aria-label','ફોટો ખોલો: '+(x.title||'માહિતી'));
+  const img=document.createElement('img');img.src=x.image_url;img.alt=x.title||'જાહેરાતનો ફોટો';img.addEventListener('error',()=>b.remove());
+  b.appendChild(img);b.addEventListener('click',()=>openFeatured(x.id));rail.appendChild(b);
+ });}else{const empty=document.createElement('div');empty.className='empty';empty.style.minWidth='100%';empty.textContent='પ્રકાશિત ફોટાવાળી માહિતી અહીં દેખાશે.';rail.appendChild(empty);}
  startBannerAutoScroll();
- const d=items.filter(x=>x.category==='daily'&&(!query||[x.title,x.description].join(' ').toLowerCase().includes(query))).slice(0,6);
- $('daily').innerHTML=d.length?d.map(x=>'<article class="dailycard"><div class="dtop"><span class="dicon">📌</span>'+esc(x.item_date||x.created_at?.slice(0,10)||'નવી અપડેટ')+'</div><h3>'+esc(x.title||'દૈનિક અપડેટ')+'</h3><p>'+esc(x.description||x.item_day||'')+'</p>'+(x.link_url?'<a href="#" onclick="openExternal(\''+esc(x.link_url).replace(/'/g,'%27')+'\');return false">વિગતો જુઓ ↗</a>':'')+'</article>').join():'<div class="empty" style="grid-column:1/-1">હાલમાં કોઈ નવા દૈનિક અપડેટ્સ ઉપલબ્ધ નથી.</div>';
+ const dailyMatches=items.filter(x=>categoryMatches(x.category,'daily')&&(!query||[x.title,x.description].join(' ').toLowerCase().includes(query)));
+ const d=(dailyMatches.length?dailyMatches:items.filter(x=>!query||[x.title,x.description].join(' ').toLowerCase().includes(query))).slice(0,6);
+ const daily=$('daily');daily.replaceChildren();
+ if(d.length){d.forEach(x=>{
+  const card=document.createElement('article');card.className='dailycard';card.tabIndex=0;card.setAttribute('role','button');
+  const top=document.createElement('div');top.className='dtop';const ico=document.createElement('span');ico.className='dicon';ico.textContent='📌';top.appendChild(ico);
+  const date=document.createElement('span');date.textContent=x.item_date||(x.created_at?x.created_at.slice(0,10):'નવી અપડેટ');top.appendChild(date);
+  const h=document.createElement('h3');h.textContent=x.title||'દૈનિક અપડેટ';const p=document.createElement('p');p.textContent=x.description||x.item_day||'';
+  card.append(top,h,p);
+  const url=x.link_url||x.link||x.target_url;if(url){const a=document.createElement('a');a.href='#';a.textContent='વિગતો જુઓ ↗';a.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();openExternal(url);});card.appendChild(a);}
+  card.addEventListener('click',()=>openFeatured(x.id));card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openFeatured(x.id);}});daily.appendChild(card);
+ });}else{const empty=document.createElement('div');empty.className='empty';empty.style.gridColumn='1/-1';empty.textContent='હાલમાં કોઈ પ્રકાશિત માહિતી ઉપલબ્ધ નથી.';daily.appendChild(empty);}
 }
 function renderFeed(){
- const a=items.filter(x=>x.category===active&&(!query||[x.title,x.description,x.item_day].join(' ').toLowerCase().includes(query)));
- $('ccount').textContent=a.length+' માહિતી';
- $('feed').innerHTML=a.length?a.map(x=>'<article class="feedcard" data-item-id="'+esc(x.id)+'" role="button" tabindex="0">'+(x.image_url?'<img src="'+esc(x.image_url)+'" alt="" onerror="this.style.display=\'none\'">':'<div class="dicon">📄</div>')+'<div class="feedbody"><h3>'+esc(x.title||ci(x.category)[1])+'</h3><p>'+esc((x.description||'વિગતો જોવા માટે ક્લિક કરો').slice(0,150))+'</p></div><div style="align-self:center;color:#176eb1;font-weight:900">›</div></article>').join():'<div class="empty">આ વિભાગમાં હાલમાં નવી માહિતી ઉપલબ્ધ નથી. કૃપા કરીને પછી ફરી તપાસો.</div>';
- $('feed').querySelectorAll('[data-item-id]').forEach(el=>{el.addEventListener('click',()=>openItem(el.dataset.itemId));el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openItem(el.dataset.itemId)}})});
+ const a=items.filter(x=>categoryMatches(x.category,active)&&(!query||[x.title,x.description,x.item_day].join(' ').toLowerCase().includes(query)));
+ $('ccount').textContent=a.length+' માહિતી';const feed=$('feed');feed.replaceChildren();
+ if(!a.length){const empty=document.createElement('div');empty.className='empty';empty.textContent='આ વિભાગમાં હાલમાં નવી માહિતી ઉપલબ્ધ નથી. કૃપા કરીને પછી ફરી તપાસો.';feed.appendChild(empty);return;}
+ a.forEach(x=>{
+  const card=document.createElement('article');card.className='feedcard';card.dataset.itemId=x.id;card.tabIndex=0;card.setAttribute('role','button');
+  if(x.image_url){const img=document.createElement('img');img.src=x.image_url;img.alt='';img.addEventListener('error',()=>img.remove());card.appendChild(img);}else{const ico=document.createElement('div');ico.className='dicon';ico.textContent='📄';card.appendChild(ico);}
+  const body=document.createElement('div');body.className='feedbody';const h=document.createElement('h3');h.textContent=x.title||ci(x.category)[1];const p=document.createElement('p');p.textContent=(x.description||'વિગતો જોવા માટે ક્લિક કરો').slice(0,150);body.append(h,p);card.appendChild(body);
+  const arrow=document.createElement('div');arrow.style.cssText='align-self:center;color:#176eb1;font-weight:900';arrow.textContent='›';card.appendChild(arrow);
+  card.addEventListener('click',()=>openItem(x.id));card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openItem(x.id);}});feed.appendChild(card);
+ });
+}
+function categoryMatches(value,selected){
+ const v=String(value||'').toLowerCase().trim();if(v===String(selected).toLowerCase())return true;
+ const aliases={education:['study','અભ્યાસ','શિક્ષણ'],jobs:['job','recruitment','ભરતી','નોકરી'],schemes:['scheme','યોજના'],farmer:['કિસાન','ખેડૂત'],online:['application','અરજી','ઓનલાઇન'],courses:['course','કોર્સ'],daily:['updates','daily_updates','દૈનિક','અપડેટ'],news:['સમાચાર','ન્યૂઝ'],currentJobs:['current_jobs','હાલમાં ચાલુ ભરતી'],graduateJobs:['graduate_jobs','ડિગ્રી પાસ ભરતી'],results:['રિઝલ્ટ','પરિણામ'],formCenter:['form_center','ફોર્મ કેન્દ્ર'],ads:['advertisement','જાહેરાત'],about:['અમારા વિશે']};
+ return (aliases[selected]||[]).some(k=>v===k||v.includes(k));
 }
 function openItem(id){
  const x=items.find(v=>String(v.id)===String(id));if(!x)return;
