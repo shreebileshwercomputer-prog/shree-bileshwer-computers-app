@@ -70,13 +70,13 @@ main{padding-bottom:96px}
 
 </style></head><body>
 <header class="top"><div class="row"><button class="menubtn" onclick="menu(true)" aria-label="મેનુ">☰</button><div class="logo">SB</div><div><div class="small">તમારી મદદ માટે એક જ જગ્યા</div><h1>SHREE BILESHWER COMPUTERS</h1><div class="tagline">શિક્ષણ • રોજગાર • યોજના • ડિજિટલ સેવા</div></div></div><label class="search">⌕ <input id="search" placeholder="માહિતી શોધો..." aria-label="માહિતી શોધો"></label></header>
-<div class="quicknav" id="quicknav" aria-label="ઝડપી મેનુ"></div>
+<div class="quicknav hidden" id="quicknav" aria-label="ઝડપી મેનુ"></div>
 
 <div class="shade" id="shade" onclick="if(event.target===this)menu(false)"><nav class="drawer"><div class="dhead"><div class="logo">SB</div><h2>SHREE BILESHWER COMPUTERS</h2><p>તમારી જરૂરિયાતની ડિજિટલ સેવાઓ</p></div><div id="menuitems"></div></nav></div>
-<main><section id="home"><div class="head first"><h2>✨ કોર્સ અને જાહેરાતો</h2><small>FEATURED</small></div><div class="banners" id="banners"><div class="empty" style="min-width:100%">બેનર લોડ થઈ રહ્યા છે…</div></div><div class="head"><h2>⚡ દૈનિક અપડેટ્સ</h2><small>નવી માહિતી</small></div><div class="daily" id="daily"></div><div class="head"><h2>📚 મુખ્ય સેવાઓ</h2><small>વિભાગ પસંદ કરો</small></div><div class="services" id="services"></div></section>
+<main><section id="home"><div class="head first"><h2>✨ કોર્સ અને જાહેરાતો</h2><small>FEATURED</small></div><div class="banners" id="banners"><div class="empty" style="min-width:100%">બેનર લોડ થઈ રહ્યા છે…</div></div><div class="head"><h2>⚡ Daily Updates</h2><button class="seeall" onclick="category(\'daily\')">બધા જુઓ →</button></div><div class="daily" id="daily"></div><div class="head"><h2>📚 મુખ્ય સેવાઓ</h2><small>વિભાગ પસંદ કરો</small></div><div class="services" id="services"></div></section>
 <section id="contentpage" class="hidden"><div class="head first"><h2 id="ctitle">માહિતી</h2><small id="ccount"></small></div><div id="feed"></div></section>
 <section id="toolpage" class="hidden"><div class="head first"><h2 id="tooltitle">ટૂલ</h2></div><div id="toolcontent"></div></section><div class="bottom">© SHREE BILESHWER COMPUTERS<br>વિશ્વસનીય માહિતી • ઉપયોગી સેવા • ડિજિટલ સહાય</div></main>
-<nav class="bottom-nav" aria-label="મુખ્ય નેવિગેશન"><button id="bn-home" class="active" onclick="bottomHome()"><span>⌂</span>હોમ</button><button id="bn-services" onclick="bottomServices()"><span>☷</span>સેવાઓ</button><button id="bn-search" onclick="bottomSearch()"><span>⌕</span>શોધો</button><button id="bn-notify" onclick="bottomUpdates()"><span>♧</span>નોટિફિકેશન</button></nav>
+<nav class="bottom-nav" aria-label="મુખ્ય નેવિગેશન"><button id="bn-home" class="active" onclick="bottomHome()"><span>⌂</span>હોમ</button><button id="bn-education" onclick="category(\'education\')"><span>🎓</span>અભ્યાસ</button><button id="bn-jobs" onclick="category(\'jobs\')"><span>💼</span>નોકરી</button><button id="bn-schemes" onclick="category(\'schemes\')"><span>🏛️</span>યોજનાઓ</button><button id="bn-farmer" onclick="category(\'farmer\')"><span>🌾</span>ખેડૂત</button><button id="bn-online" onclick="category(\'online\')"><span>📝</span>Online</button><button id="bn-news" onclick="category(\'news\')"><span>📰</span>NEWS</button></nav>
 <script>
 const SB_URL='https://lyalbowhounuwavmbpwt.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx5YWxib3dob3VudXdhdm1icHd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIxNjQ2NDgsImV4cCI6MjEwNzc0MDY0OH0._7nxzhSZSAIRgoMMOwd94eYrlZ20IJQaykCo_AZv8AE';
@@ -87,7 +87,7 @@ function ci(id){return cats.find(c=>c[0]===id)||[id||'માહિતી',id||'�
 function menu(open){$('shade').classList.toggle('show',open)}
 function nav(label,icon,action){return '<button class="nav" onclick="'+action+'"><i>'+icon+'</i>'+label+'</button>'}
 function renderQuicknav(){const quick=cats.filter(c=>['education','jobs','schemes','farmer','online','courses'].includes(c[0]));$('quicknav').innerHTML=quick.map(c=>'<button type="button" onclick="category(\''+c[0]+'\')">'+c[2]+' '+c[1]+'</button>').join('')}
-function setupMenu(){renderQuicknav();const links=[['about','અમારા વિશે','ℹ️'],['results','પરીક્ષા રિઝલ્ટ','📊'],['currentJobs','હાલમાં ચાલુ ભરતી','📣'],['graduateJobs','ડિગ્રી પાસ ભરતી','🎯'],['formCenter','Online ફોર્મ સેન્ટર','📋']];$('menuitems').innerHTML=links.map(x=>nav(x[1],x[2],"category('"+x[0]+"')")).join()+nav('રિઝ્યૂમે બનાવો','📄',"tool('resume')")+nav('Age Calculator','🎂',"tool('age')")+nav('બાયોડેટા બનાવો','🧾',"tool('biodata')")+nav('Photo Resize','🖼️',"tool('photo')")+nav('હોમ ડેશબોર્ડ','🏠','goHome()')}
+function setupMenu(){renderQuicknav();const links=[['about','About','ℹ️']];$('menuitems').innerHTML=links.map(x=>nav(x[1],x[2],"category('"+x[0]+"')")).join()+nav('Age Calculator','🎂',"tool('age')")+nav('Make Biodata','🧾',"tool('biodata')")+nav('Make Resume','📄',"tool('resume')")+nav('હાલની ચાલુ ભરતી','📣',"category('currentJobs')")+nav('ડિગ્રી પાસ ભરતી','🎯',"category('graduateJobs')")}
 function show(p){page=p;$('home').classList.toggle('hidden',p!=='home');$('contentpage').classList.toggle('hidden',p!=='content');$('toolpage').classList.toggle('hidden',p!=='tool')}
 function goHome(){active='all';query='';$('search').value='';show('home');menu(false);renderHome();window.scrollTo(0,0)}
 function category(id){active=id;query='';$('search').value='';$('ctitle').textContent=ci(id)[1];show('content');menu(false);renderFeed();window.scrollTo(0,0)}
@@ -97,7 +97,7 @@ function renderHome(){
  $('banners').innerHTML=featured.length?featured.map(x=>'<article class="banner" role="link" tabindex="0" onclick="openExternal(\''+esc(x.link_url||x.target_url||'').replace(/'/g,'%27')+'\')">'+(x.image_url?'<img src="'+esc(x.image_url)+'" alt="" onerror="this.style.display=\'none\'">':'')+'<div class="btxt"><small>'+(x.category==='ads'?'📢 જાહેરાત':'🎓 કોર્સ અને તાલીમ')+'</small><h3>'+esc(x.title||ci(x.category)[1])+'</h3><p>'+esc(x.description||'વધુ માહિતી માટે ક્લિક કરો')+'</p></div>'+(x.link_url||x.target_url?'<button class="bopen" onclick="event.stopPropagation();openExternal(\''+esc(x.link_url||x.target_url).replace(/'/g,'%27')+'\')">વધુ જાણો ↗</button>':'')+'</article>').join():'<div class="empty" style="min-width:100%">નવી જાહેરાતો અને કોર્સ ટૂંક સમયમાં અહીં દેખાશે.</div>';
  const d=items.filter(x=>x.category==='daily'&&(!query||[x.title,x.description].join(' ').toLowerCase().includes(query))).slice(0,6);
  $('daily').innerHTML=d.length?d.map(x=>'<article class="dailycard"><div class="dtop"><span class="dicon">📌</span>'+esc(x.item_date||x.created_at?.slice(0,10)||'નવી અપડેટ')+'</div><h3>'+esc(x.title||'દૈનિક અપડેટ')+'</h3><p>'+esc(x.description||x.item_day||'')+'</p>'+(x.link_url?'<a href="#" onclick="openExternal(\''+esc(x.link_url).replace(/'/g,'%27')+'\');return false">વિગતો જુઓ ↗</a>':'')+'</article>').join():'<div class="empty" style="grid-column:1/-1">હાલમાં કોઈ નવા દૈનિક અપડેટ્સ ઉપલબ્ધ નથી.</div>';
- $('services').innerHTML=cats.map(c=>'<button class="service" onclick="category(\''+c[0]+'\')"><div class="ico">'+c[2]+'</div><span>'+c[1]+'</span></button>').join()
+ $('services').innerHTML=cats.filter(c=>['education','jobs','schemes','farmer','online','news'].includes(c[0])).map(c=>'<button class="service" onclick="category(\''+c[0]+'\')"><div class="ico">'+c[2]+'</div><span>'+(c[0]==='online'?'Online અરજીઓ':c[1])+'</span></button>').join()
 }
 function renderFeed(){
  const a=items.filter(x=>x.category===active&&(!query||[x.title,x.description,x.item_day].join(' ').toLowerCase().includes(query)));
@@ -133,7 +133,7 @@ function makeDoc(type){if(!$('name').value.trim()){$('docresult').innerHTML='<di
 function downloadDoc(type){if(!$('name').value.trim()){$('docresult').innerHTML='<div class="result">કૃપા કરીને નામ લખો.</div>';return}const u=URL.createObjectURL(new Blob([docHtml(type)],{type:'text/html;charset=utf-8'})),a=document.createElement('a');a.href=u;a.download=type+'.html';a.click();setTimeout(()=>URL.revokeObjectURL(u),2000)}
 function resizePhoto(){const f=$('photo').files[0];if(!f){$('photoresult').innerHTML='<div class="result">પહેલા ફોટો પસંદ કરો.</div>';return}const [w,h]=$('psize').value.split(',').map(Number),img=new Image(),src=URL.createObjectURL(f);img.onload=()=>{const c=$('canvas');c.width=w;c.height=h;const ctx=c.getContext('2d'),scale=Math.max(w/img.width,h/img.height),sw=w/scale,sh=h/scale;ctx.drawImage(img,(img.width-sw)/2,(img.height-sh)/2,sw,sh,0,0,w,h);c.toBlob(blob=>{const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='shree-bileshwer-photo-'+w+'x'+h+'.jpg';a.click();$('photoresult').innerHTML='<div class="result">ફોટો તૈયાર થયો: '+w+' × '+h+' px</div>';setTimeout(()=>URL.revokeObjectURL(u),3000)},'image/jpeg',.92);URL.revokeObjectURL(src)};img.onerror=()=>{$('photoresult').innerHTML='<div class="result">ફોટો ખોલી શકાયો નહીં.</div>';URL.revokeObjectURL(src)};img.src=src}
 
-function setBottomActive(id){['bn-home','bn-services','bn-search','bn-notify'].forEach(x=>$(x)?.classList.toggle('active',x===id))}
+function setBottomActive(id){['bn-home','bn-education','bn-jobs','bn-schemes','bn-farmer','bn-online','bn-news'].forEach(x=>$(x)?.classList.toggle('active',x===id))}
 function bottomHome(){setBottomActive('bn-home');goHome()}
 function bottomServices(){setBottomActive('bn-services');show('home');menu(false);$('services').scrollIntoView({behavior:'smooth',block:'start'})}
 function bottomSearch(){setBottomActive('bn-search');$('search').focus();window.scrollTo({top:0,behavior:'smooth'})}
@@ -151,3 +151,16 @@ document.addEventListener('visibilitychange',()=>{if(document.visibilityState===
 window.addEventListener('focus',refreshPublishedContent);
 setupMenu();renderHome();loadContent();
 </script></body></html>
+
+<style>
+/* Approved navigation and 16:9 banner adjustments */
+.quicknav{display:none!important}
+.banner{height:auto!important;aspect-ratio:16/9;min-width:100%;max-height:none}
+.banner img{object-fit:cover}
+.seeall{border:0;background:transparent;color:#176eb1;font-size:11px;font-weight:800;padding:5px 0}
+.bottom-nav{display:flex!important;justify-content:flex-start;overflow-x:auto;gap:2px;padding:7px 5px calc(7px + env(safe-area-inset-bottom));scrollbar-width:none}
+.bottom-nav::-webkit-scrollbar{display:none}
+.bottom-nav button{flex:1 0 49px;min-width:49px;font-size:9px;padding:5px 1px;white-space:nowrap}
+.bottom-nav button span{font-size:17px}
+@media(min-width:560px){.bottom-nav{justify-content:center}.bottom-nav button{flex:0 1 90px;font-size:11px}}
+</style>
