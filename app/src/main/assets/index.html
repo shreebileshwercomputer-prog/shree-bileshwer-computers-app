@@ -139,6 +139,7 @@ function renderHome(){
 function renderFeed(){
  const a=items.filter(x=>categoryMatches(x.category,active)&&(!query||[x.title,x.description,x.item_day].join(' ').toLowerCase().includes(query)));
  $('ccount').textContent=a.length+' માહિતી';const feed=$('feed');feed.replaceChildren();
+ if(active==="about"){const brand=document.createElement("div");brand.className="panel";brand.style.cssText="text-align:center;padding:24px;margin-bottom:12px";const logo=document.createElement("img");logo.src="brand-logo.png";logo.alt="SHREE BILESHWER COMPUTERS";logo.style.cssText="width:55vw;max-width:180px;max-height:160px;object-fit:contain";brand.appendChild(logo);feed.appendChild(brand);}
  if(!a.length){const empty=document.createElement('div');empty.className='empty';empty.textContent='આ વિભાગમાં હાલમાં નવી માહિતી ઉપલબ્ધ નથી. કૃપા કરીને પછી ફરી તપાસો.';feed.appendChild(empty);return;}
  a.forEach(x=>{
   const card=document.createElement('article');card.className='feedcard';card.dataset.itemId=x.id;card.tabIndex=0;card.setAttribute('role','button');
