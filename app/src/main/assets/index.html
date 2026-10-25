@@ -73,10 +73,10 @@ main{padding-bottom:96px}
 <div class="quicknav hidden" id="quicknav" aria-label="ઝડપી મેનુ"></div>
 
 <div class="shade" id="shade" onclick="if(event.target===this)menu(false)"><nav class="drawer"><div class="dhead"><div class="logo">SB</div><h2>SHREE BILESHWER COMPUTERS</h2><p>તમારી જરૂરિયાતની ડિજિટલ સેવાઓ</p></div><div id="menuitems"></div></nav></div>
-<main><section id="home"><div class="head first"><h2>✨ કોર્સ અને જાહેરાતો</h2><small>FEATURED</small></div><div class="banners" id="banners"><div class="empty" style="min-width:100%">બેનર લોડ થઈ રહ્યા છે…</div></div><div class="head"><h2>⚡ Daily Updates</h2><button class="seeall" onclick="category(\'daily\')">બધા જુઓ →</button></div><div class="daily" id="daily"></div><div class="head"><h2>📚 મુખ્ય સેવાઓ</h2><small>વિભાગ પસંદ કરો</small></div><div class="services" id="services"></div></section>
+<main><section id="home"><div class="head first"><h2>✨ કોર્સ અને જાહેરાતો</h2><small>FEATURED</small></div><div class="banners" id="banners"><div class="empty" style="min-width:100%">બેનર લોડ થઈ રહ્યા છે…</div></div><div class="head"><h2>⚡ Daily Updates</h2><button class="seeall" onclick="category(\'daily\')">બધા જુઓ →</button></div><div class="daily" id="daily"></div></section>
 <section id="contentpage" class="hidden"><div class="head first"><h2 id="ctitle">માહિતી</h2><small id="ccount"></small></div><div id="feed"></div></section>
 <section id="toolpage" class="hidden"><div class="head first"><h2 id="tooltitle">ટૂલ</h2></div><div id="toolcontent"></div></section><div class="bottom">© SHREE BILESHWER COMPUTERS<br>વિશ્વસનીય માહિતી • ઉપયોગી સેવા • ડિજિટલ સહાય</div></main>
-<nav class="bottom-nav" aria-label="મુખ્ય નેવિગેશન"><button id="bn-home" class="active" onclick="bottomHome()"><span>⌂</span>હોમ</button><button id="bn-education" onclick="category(\'education\')"><span>🎓</span>અભ્યાસ</button><button id="bn-jobs" onclick="category(\'jobs\')"><span>💼</span>નોકરી</button><button id="bn-schemes" onclick="category(\'schemes\')"><span>🏛️</span>યોજનાઓ</button><button id="bn-farmer" onclick="category(\'farmer\')"><span>🌾</span>ખેડૂત</button><button id="bn-online" onclick="category(\'online\')"><span>📝</span>Online</button><button id="bn-news" onclick="category(\'news\')"><span>📰</span>NEWS</button></nav>
+<nav class="bottom-nav" aria-label="મુખ્ય નેવિગેશન"><button id="bn-home" class="active" onclick="bottomHome()"><span>⌂</span>હોમ</button><button id="bn-education" onclick="bottomCategory(\'education\',\'bn-education\')"><span>🎓</span>અભ્યાસ</button><button id="bn-jobs" onclick="bottomCategory(\'jobs\',\'bn-jobs\')"><span>💼</span>નોકરી</button><button id="bn-schemes" onclick="bottomCategory(\'schemes\',\'bn-schemes\')"><span>🏛️</span>યોજનાઓ</button><button id="bn-farmer" onclick="bottomCategory(\'farmer\',\'bn-farmer\')"><span>🌾</span>ખેડૂત</button><button id="bn-online" onclick="bottomCategory(\'online\',\'bn-online\')"><span>📝</span>Online</button><button id="bn-news" onclick="bottomCategory(\'news\',\'bn-news\')"><span>📰</span>NEWS</button></nav>
 <script>
 const SB_URL='https://lyalbowhounuwavmbpwt.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx5YWxib3dob3VudXdhdm1icHd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIxNjQ2NDgsImV4cCI6MjEwNzc0MDY0OH0._7nxzhSZSAIRgoMMOwd94eYrlZ20IJQaykCo_AZv8AE';
@@ -135,6 +135,7 @@ function resizePhoto(){const f=$('photo').files[0];if(!f){$('photoresult').inner
 
 function setBottomActive(id){['bn-home','bn-education','bn-jobs','bn-schemes','bn-farmer','bn-online','bn-news'].forEach(x=>$(x)?.classList.toggle('active',x===id))}
 function bottomHome(){setBottomActive('bn-home');goHome()}
+function bottomCategory(id,navId){setBottomActive(navId);category(id)}
 function bottomServices(){setBottomActive('bn-services');show('home');menu(false);$('services').scrollIntoView({behavior:'smooth',block:'start'})}
 function bottomSearch(){setBottomActive('bn-search');$('search').focus();window.scrollTo({top:0,behavior:'smooth'})}
 function bottomUpdates(){setBottomActive('bn-notify');category('daily')}
